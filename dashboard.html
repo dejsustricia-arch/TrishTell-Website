@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — TrishTell</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    <header class="header-nav">
+      <a href="dashboard.html" class="brand-logo">♡ whisper</a>
+      <div style="display: flex; gap: 8px;">
+        <a href="settings.html" class="btn btn-secondary btn-sm">Settings</a>
+        <button id="logout-btn" class="btn btn-danger btn-sm">Log Out</button>
+      </div>
+    </header>
+
+    <div class="card text-center">
+      <h3 id="user-display-name">TrishTell User</h3>
+      <p id="user-handle" style="margin-bottom: 16px;">@username</p>
+      <div class="form-group"><input type="text" id="personal-link-input" readonly></div>
+      <div style="display: flex; gap: 8px;">
+        <button id="copy-link-btn" class="btn">Copy Link</button>
+        <button id="share-btn" class="btn btn-secondary">Share</button>
+        <button id="qr-btn" class="btn btn-secondary" style="width: auto;">QR</button>
+      </div>
+    </div>
+
+    <h3>Your Inbox</h3>
+    <div id="inbox-container"></div>
+  </div>
+
+  <div id="qr-modal" class="modal">
+    <div class="modal-content text-center">
+      <h3>Your QR Code</h3>
+      <div id="qrcode" style="display: flex; justify-content: center; margin: 16px 0;"></div>
+      <button id="close-qr" class="btn btn-secondary">Close</button>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initDashboard } from './js/dashboard.js';
+    initDashboard();
+
+    const modal = document.getElementById('qr-modal');
+    document.getElementById('qr-btn').addEventListener('click', () => {
+      const qrContainer = document.getElementById('qrcode');
+      qrContainer.innerHTML = '';
+      new QRCode(qrContainer, {
+        text: document.getElementById('personal-link-input').value,
+        width: 180, height: 180, colorDark : "#E889AA", colorLight : "#ffffff"
+      });
+      modal.style.display = 'flex';
+    });
+    document.getElementById('close-qr').addEventListener('click', () => modal.style.display = 'none');
+  </script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — TrishTell</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <header class="header-nav"><a href="dashboard.html" class="brand-logo">♡ Admin Panel</a></header>
+    <h3>Reported Messages</h3>
+    <div id="reports-container" style="margin-top: 16px;"></div>
+  </div>
+
+  <script type="module">
+    import { initAdmin } from './js/admin.js';
+    initAdmin();
+  </script>
+</body>
+</html>

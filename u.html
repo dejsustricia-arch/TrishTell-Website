@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Send Anonymous Message — TrishTell</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap">
+</head>
+<body>
+  <div class="app-container">
+    <header class="header-nav"><a href="index.html" class="brand-logo">♡ Trishtell</a></header>
+
+    <div class="card text-center">
+      <h2 id="recipient-title">send me anonymous messages!</h2>
+      <p id="recipient-bio" style="margin-bottom: 20px;">your identity will stay secret ♡</p>
+
+      <div id="status-alert" class="alert"></div>
+
+      <form id="msg-form">
+        <div class="form-group">
+          <textarea id="msg-input" maxlength="300" placeholder="write something nice, secret, or constructive..." required></textarea>
+          <div style="text-align: right; font-size: 0.75rem; color: var(--text-muted);"><span id="char-count">0</span>/300</div>
+        </div>
+        <button type="submit" class="btn">Send Anonymously ♡</button>
+      </form>
+    </div>
+  </div>
+
+  <script type="module">
+    import { supabase } from './js/supabase-config.js';
+    import { sendAnonymousMessage } from './js/message.js';
+
+    const username = new URLSearchParams(window.location.search).get('u');
+    const statusAlert = document.getElementById('status-alert');
+    const msgInput = document.getElementById('msg-input');
+
+    if (!username) window.location.href = 'index.html';
+
+    async function loadRecipient() {
+      const { data: profile } = await supabase.from('profiles').select('display_name, bio').eq('username', username.toLowerCase()).single();
+      if (profile) {
+        document.getElementById('recipient-title').innerText = profile.display_name;
+        if (profile.bio) document.getElementById('recipient-bio').innerText = profile.bio;
+      } else {
+        document.getElementById('recipient-title').innerText = 'User Not Found';
+        document.getElementById('msg-form').style.display = 'none';
+      }
+    }
+
+    msgInput.addEventListener('input', () => document.getElementById('char-count').innerText = msgInput.value.length);
+
+    document.getElementById('msg-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      statusAlert.style.display = 'none';
+      try {
+        await sendAnonymousMessage(username, msgInput.value);
+        statusAlert.className = 'alert alert-success';
+        statusAlert.innerText = 'Message sent anonymously! ♡';
+        msgInput.value = '';
+      } catch (err) {
+        statusAlert.className = 'alert alert-error';
+        statusAlert.innerText = err.message;
+      }
+    });
+
+    loadRecipient();
+  </script>
+</body>
+</html>

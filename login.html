@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Log In — TrishTell</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap">
+</head>
+<body>
+  <div class="app-container">
+    <header class="header-nav"><a href="index.html" class="brand-logo">♡ TrishTell</a></header>
+
+    <div class="card">
+      <h2>Welcome Back</h2>
+      <div id="error-alert" class="alert alert-error"></div>
+
+      <form id="login-form">
+        <div class="form-group"><label>Email</label><input type="email" id="email" required></div>
+        <div class="form-group"><label>Password</label><input type="password" id="password" required></div>
+        <button type="submit" class="btn">Log In</button>
+      </form>
+    </div>
+  </div>
+
+  <script type="module">
+    import { loginUser } from './js/auth.js';
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alert = document.getElementById('error-alert');
+      alert.style.display = 'none';
+      try {
+        await loginUser(document.getElementById('email').value.trim(), document.getElementById('password').value);
+        window.location.href = 'dashboard.html';
+      } catch (err) {
+        alert.innerText = err.message || 'Invalid credentials.';
+        alert.style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>
