@@ -9,7 +9,8 @@ export async function initDashboard() {
   document.getElementById('user-display-name').innerText = currentProfile.display_name;
   document.getElementById('user-handle').innerText = `@${currentProfile.username}`;
   
-  const personalLink = `${window.location.origin}/u.html?u=${currentProfile.username}`;
+  // FIX: Sinama ang repository path para hindi mag-404 sa GitHub Pages
+  const personalLink = `${window.location.origin}/TrishTell-Website/u.html?u=${currentProfile.username}`;
   document.getElementById('personal-link-input').value = personalLink;
 
   document.getElementById('logout-btn').addEventListener('click', logoutUser);
@@ -86,4 +87,4 @@ export async function loadInbox() {
 
 function escapeHTML(str) {
   return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
-                            }
+}
